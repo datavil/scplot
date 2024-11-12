@@ -1,11 +1,12 @@
-# SCPLOT
+# APIS
 
+Apis (not APIs) comes from honey bees
 An Interactive Single-Cell Plotting Tool over a ggplot-like API.
 
 ## Installation
 
 ```bash
-pip install scplot
+pip install apis
 ```
 
 ## Usage

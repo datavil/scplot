@@ -11,3 +11,6 @@ wheels/
 
 # big files
 *.h5ad
+
+# pypi token
+token
