@@ -1,16 +1,17 @@
-# APIS
+# Cellestial
 
-Apis (not APIs) comes from honey bees
-An Interactive Single-Cell Plotting Tool over a ggplot-like API.
+An Interactive and Highly Customizable __Single-Cell__ & __Spatial__ Plotting Tool over a ggplot-like API.
+
+Name Encuplates: Space, Scatters of Stars, and of course Cells.
 
 ## Installation
 
 ```bash
-pip install apis
+pip install cellestial
 ```
 
 ## Usage
 
 ```python
-import scplot as sp
+import cellestial as cl
 ```
