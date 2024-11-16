@@ -1,43 +1,21 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 # Core scverse libraries
 import polars as pl
 
 # Data retrieval
 import scanpy as sc
-from lets_plot import *
 from lets_plot import (
     LetsPlot,
     aes,
-    arrow,
-    element_blank,
-    element_line,
-    element_rect,
-    element_text,
-    geom_blank,
-    geom_jitter,
     geom_point,
-    geom_segment,
-    geom_violin,
-    gggrid,
     ggplot,
-    ggsize,
-    ggtb,
-    guide_colorbar,
-    guide_legend,
-    guides,
     labs,
     layer_tooltips,
     scale_color_brewer,
     scale_color_continuous,
-    scale_color_gradient,
-    scale_color_hue,
-    scale_color_viridis,
-    scale_shape,
-    theme,
-    theme_classic,
 )
 from lets_plot.plot.core import PlotSpec
 from scanpy import AnnData
@@ -47,14 +25,17 @@ from cellestial.util import _add_arrow_axis, interactive
 
 LetsPlot.setup_html()
 
+if TYPE_CHECKING:
+    from lets_plot.plot.core import PlotSpec
 
 @interactive
-def dimension(
+def dimensional(
     data: AnnData,
     key: Literal["leiden", "louvain"] | str = "leiden",
     *,
     dimensions: Literal["umap", "pca", "tsne"] = "umap",
     size: float = 0.8,
+    point_shape: int = 3,
     interactive: bool = False,  # used by interactive decorator
     cluster_name: str = "Cluster",
     barcode_name: str = "Barcode",
@@ -117,6 +98,7 @@ def dimension(
                 aes(x=f"{dimensions}1", y=f"{dimensions}2", color=key),
                 size=size,
                 tooltips=layer_tooltips([barcode_name, key]),
+                shape=point_shape,
             )
             + scale_color_continuous(low=color_low, high=color_high)
             + labs(
@@ -126,7 +108,7 @@ def dimension(
     # -------------------------- NOT A GENE OR CLUSTER --------------------------
     else:
         msg = f"'{key}' is not present in `cluster names` nor `gene names`"
-        raise msg
+        raise ValueError(msg)
 
     # handle arrow axis
     scttr += _add_arrow_axis(
@@ -149,6 +131,7 @@ def expression(
     *,
     dimensions: Literal["umap", "pca", "tsne"] = "umap",
     size: float = 0.8,
+    point_shape: int = 3,
     interactive: bool = False,  # used by interactive decorator
     cluster_name: str = "Cluster",
     cluster_type: Literal["leiden", "louvain"] | None = None,
@@ -201,6 +184,7 @@ def expression(
                 aes(x=f"{dimensions}1", y=f"{dimensions}2", color=gene),
                 size=size,
                 tooltips=layer_tooltips(tooltips),
+                shape=point_shape,
             )
             + scale_color_continuous(low=color_low, high=color_high)
             + labs(
@@ -210,7 +194,7 @@ def expression(
     # -------------------------- NOT A GENE OR CLUSTER --------------------------
     else:
         msg = f"'{gene}' is not present in `gene names`"
-        raise Exception(msg)
+        raise ValueError(msg)
 
     # handle arrow axis
     scttr += _add_arrow_axis(
@@ -230,20 +214,13 @@ def test_dimension():
     import os
     from pathlib import Path
 
-    import scanpy as sc
-
     os.chdir(Path(__file__).parent.parent.parent.parent)  # to project root
     data = sc.read("data/pbmc3k_pped.h5ad")
 
-    dimension(data, key="leiden", dimensions="umap", interactive=True, axis_type=None).to_html(
-        "plots/test_dim_umap_none.html"
-    )
-    dimension(data, key="leiden", dimensions="umap", interactive=True, axis_type="arrow").to_html(
-        "plots/test_dim_umap_arrow.html"
-    )
-    dimension(data, key="leiden", dimensions="umap", interactive=True, axis_type="axis").to_html(
-        "plots/test_dim_umap_axis.html"
-    )
+    for ax in [None, "arrow", "axis"]:
+        plot = dimension(data, axis_type=ax)
+        plot.to_html(f"plots/test_dim_umap_{ax}.html")
+        plot.to_svg(f"plots/test_dim_umap_{ax}.svg")
 
     return
 
@@ -252,12 +229,13 @@ def test_expression():
     import os
     from pathlib import Path
 
-    import scanpy as sc
-
     os.chdir(Path(__file__).parent.parent.parent.parent)  # to project root
     data = sc.read("data/pbmc3k_pped.h5ad")
-    expression(data, gene="MT-ND2", interactive=True).to_html("plots/test_expression.html")
+    plot = expression(data, gene="MT-ND2", cluster_type="leiden").to_html("plots/test_expression.html")
+    plot.to_html("plots/test_expression.svg")
+    plot.to_svg("plots/test_expression.svg")
 
 
 if __name__ == "__main__":
+    test_dimension()
     test_expression()

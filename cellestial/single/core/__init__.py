@@ -1,13 +1,8 @@
-from functools import partial
-
 from cellestial.single.core.dimensional import dimension, expression
+from cellestial.single.core.subdimensional import pca, tsne, umap
 
 # alias
 dim = dimension
-# subsets (partials)
-umap = partial(dimension, dimensions="umap")
-pca = partial(dimension, dimensions="pca")
-tsne = partial(dimension, dimensions="tsne")
 
 
 __all__ = [

@@ -4,13 +4,13 @@
        <script type="text/javascript" data-lets-plot-script="library" src="https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.5.1/js-package/distr/lets-plot.min.js"></script>
    </head>
    <body>
-          <div id="vJJ8tn"></div>
+          <div id="2iIkEY"></div>
    <script type="text/javascript" data-lets-plot-script="plot">
    
    (function() {
    // ----------
    
-   var containerDiv = document.getElementById("vJJ8tn");
+   var containerDiv = document.getElementById("2iIkEY");
    var observer = new ResizeObserver(function(entries) {
        for (let entry of entries) {
            var width = containerDiv.clientWidth
@@ -72,6 +72,12 @@
 "family":"Arial",
 "blank":false
 },
+"axis_title":{
+"color":"#3f3f3f",
+"family":"Arial",
+"size":18.0,
+"blank":false
+},
 "legend_text":{
 "color":"#1f1f1f",
 "face":"plain",
@@ -82,8 +88,6 @@
 "ggsize":{
 "width":800.0,
 "height":600.0
-},
-"ggtoolbar":{
 },
 "kind":"plot",
 "scales":[{
@@ -119,21 +123,11 @@
 }
 }],
 "metainfo_list":[],
-"spec_id":"3"
+"spec_id":"5"
 };
        
-               // Wrapper for toolbar and chart
-               var outputDiv = document.createElement('div');
-               outputDiv.setAttribute('style', 'display: inline-block;');
-               containerDiv.appendChild(outputDiv);
-           
-               // Toolbar
-               var toolbar = new LetsPlot.tools.DefaultToolbar();
-               outputDiv.appendChild(toolbar.getElement());
-               
-               // Plot
-               var plotContainer = document.createElement('div');
-               outputDiv.appendChild(plotContainer);               
+               var toolbar = null;
+               var plotContainer = containerDiv;               
                
                var options = {
                    sizing: {
