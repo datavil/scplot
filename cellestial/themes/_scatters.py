@@ -30,8 +30,7 @@ from lets_plot import (
 )
 from lets_plot.plot.core import PlotSpec
 
-
-theme_dimension = (
+_THEME_DIMENSION = (
     theme_classic()
     + theme(
 
@@ -40,13 +39,14 @@ theme_dimension = (
         # customize all titles (includes legend)
         title=element_text(color="#1f1f1f", family="Arial"),
         # customize axis titles (labels)
-        axis_title_x=element_text(color="#3f3f3f", family="Arial", size=18),
-        axis_title_y=element_text(color="#3f3f3f", family="Arial", size=18),
+        axis_title=element_text(color="#3f3f3f", family="Arial", size=18),
         # customize legend text
-        legend_text=element_text(color="#1f1f1f", size=10, face="plain"),
+        legend_text=element_text(color="#1f1f1f", size=11, face="plain"),
+        # customize legend columns
+
     )
     + ggsize(800, 600)
-    + scale_color_brewer(palette="Set2")
+    + guides(color=guide_legend(ncol=2))
 )
 
 

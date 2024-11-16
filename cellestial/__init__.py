@@ -1,3 +1,3 @@
-from cellestial.decorators.util import interactive, theme_dimension
+from cellestial.util import interactive, _add_arrow_axis
 
-__all__ = ["interactive", "theme_dimension"]
+__all__ = ["interactive", "_add_arrow_axis"]
